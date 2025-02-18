@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebAPI.Dtos;
-using WebAPI.Models;
+﻿using Entities.Dtos;
+using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using WebAPI.Repositories;
 
 namespace WebAPI.Endpoints;

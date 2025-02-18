@@ -1,6 +1,4 @@
-﻿
-namespace WebAPI.Dtos;
-
+﻿namespace Entities.Dtos;
 public sealed record UpdateBookDto(
     decimal Price,
     string Title);
