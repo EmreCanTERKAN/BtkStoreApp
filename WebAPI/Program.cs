@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Repositories.EFCore;
 using WebAPI.Endpoints;
-using WebAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

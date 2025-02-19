@@ -1,7 +1,7 @@
 ﻿using Entities.Dtos;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using WebAPI.Repositories;
+using Repositories.EFCore;
 
 namespace WebAPI.Endpoints;
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebAPI.Repositories;
+
 
 namespace WebAPI.Controllers;
 [Route("api/[controller]")]
