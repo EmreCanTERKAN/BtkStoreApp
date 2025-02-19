@@ -6,18 +6,26 @@ namespace Repositories.EFCore;
 public abstract class RepositoryBase<T>(RepositoryContext context) : IRepositoryBase<T>
     where T : class
 {
-    public void Create(T entity) => context.Set<T>().Add(entity);
+    public async Task CreateAsync(T entity) => await context.Set<T>().AddAsync(entity);
 
-    public void Delete(T entity) => context.Set<T>().Remove(entity);
-
-
-    public IQueryable<T> FindAll(bool trackChanges) =>
-        trackChanges ? context.Set<T>() : context.Set<T>().AsNoTracking();
-
-
-    public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) => trackChanges ? context.Set<T>().Where(expression) : context.Set<T>().Where(expression).AsNoTracking();
+    public Task DeleteAsync(T entity)
+    {
+        context.Set<T>().Remove(entity);
+        return Task.CompletedTask;
+    }
 
 
-    public void Update(T entity) => context.Set<T>().Update(entity);
+    public async Task<IEnumerable<T>> FindAllAsync(bool trackChanges) =>
+        trackChanges ? await context.Set<T>().ToListAsync() : await context.Set<T>().AsNoTracking().ToListAsync();
+
+    public async Task<IEnumerable<T>> FindByConditionAsync(Expression<Func<T, bool>> expression, bool trackChanges) =>
+        trackChanges ? await context.Set<T>().Where(expression).ToListAsync() : await context.Set<T>().Where(expression).AsNoTracking().ToListAsync();
+
+
+    public Task UpdateAsync(T entity)
+    {
+        context.Set<T>().Update(entity);
+        return Task.CompletedTask;
+    }
 
 }

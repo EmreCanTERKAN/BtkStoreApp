@@ -4,25 +4,20 @@ using Repositories.Contracts;
 namespace Repositories.EFCore;
 public class BookRepository : RepositoryBase<Book>, IBookRepository
 {
-    public BookRepository(RepositoryContext context) : base(context)
+    public BookRepository(RepositoryContext context) : base(context) { }
+
+    public async Task CreateOneBookAsync(Book book) => await CreateAsync(book);
+
+    public async Task DeleteOneBookAsync(Book book) => await DeleteAsync(book);
+
+    public async Task<IEnumerable<Book>> GetAllBooksAsync(bool trackChanges) => await FindAllAsync(trackChanges);
+
+    public async Task<Book?> GetOneBookByIdAsync(int id, bool trackChanges)
     {
-        
+        var result = await FindByConditionAsync(b => b.Id == id, trackChanges);
+        return result.FirstOrDefault(); // Eğer kitap yoksa null döndür
     }
 
-    public void CreateOneBook(Book book) => Create(book);
-
-
-    public void DeleteOneBook(Book book) => Delete(book);
-
-
-    public IQueryable<Book> GetAllBook(bool trackChanges) => FindAll(trackChanges);
-
-
-    public IQueryable<Book> GetOneBookById(bool trackChanges, int id) => FindByCondition(b => b.Id.Equals(id), trackChanges);
-
-
-    public void UpdateOneBook(Book book) => Update(book);
-
-    
+    public async Task UpdateOneBookAsync(Book book) => await UpdateAsync(book);
 
 }

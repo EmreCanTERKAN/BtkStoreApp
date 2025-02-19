@@ -1,7 +1,8 @@
 ﻿using Entities.Dtos;
 using Entities.Models;
-using Microsoft.EntityFrameworkCore;
-using Repositories.EFCore;
+using Microsoft.AspNetCore.Mvc;
+using Repositories.Contracts;
+
 
 namespace WebAPI.Endpoints;
 
@@ -9,101 +10,65 @@ public static class UserEndpoints
 {
     public static void MapUserEndPoints(this WebApplication app)
     {
-        app.MapGet("AllUser", async (RepositoryContext context) =>
+        // Tüm kitapları getir
+        app.MapGet("AllBooks", async ([FromServices] IRepositoryManager manager) =>
         {
-            var books = await context.Books.ToListAsync();
-            return books;
+            var books = await manager.Book.GetAllBooksAsync(false);
+            return Results.Ok(books);
         });
 
-        app.MapGet("UserWithId", async (RepositoryContext context, int id) =>
+        // Belirtilen ID'ye sahip kitabı getir
+        app.MapGet("BookWithId/{id}", async ([FromServices] IRepositoryManager manager, int id) =>
         {
-            var book = await context.Books.FirstOrDefaultAsync(x => x.Id == id);
+            var book = await manager.Book.GetOneBookByIdAsync(id, false);
+            return book is null ? Results.NotFound() : Results.Ok(book);
+        });
+
+        // Yeni kitap oluştur
+        app.MapPost("Create", async ([FromServices] IRepositoryManager manager, [FromBody] CreateBookDto request) =>
+        {
+            var newBook = new Book
+            {
+                Price = request.Price,
+                Title = request.Title
+            };
+
+            await manager.Book.UpdateOneBookAsync(newBook);
+            await manager.SaveAsync();
+
+            return Results.Created($"/books/{newBook.Id}", newBook);
+        });
+
+        // Varolan kitabı güncelle
+        app.MapPut("UpdateBookWithId/{id}", async ([FromServices] IRepositoryManager manager, int id, [FromBody] UpdateBookDto request) =>
+        {
+            var existingBook = await manager.Book.GetOneBookByIdAsync(id, false);
+            if (existingBook is null)
+                return Results.NotFound();
+
+            existingBook.Price = request.Price;
+            existingBook.Title = request.Title;
+
+            await manager.Book.UpdateOneBookAsync(existingBook);
+            await manager.SaveAsync();
+
+            return Results.Ok(existingBook);
+        });
+
+        // Kitap silme işlemi
+        app.MapDelete("DeleteBookWithId/{id}", async ([FromServices] IRepositoryManager manager, int id) =>
+        {
+            var book = await manager.Book.GetOneBookByIdAsync(id, false);
             if (book is null)
                 return Results.NotFound();
 
-            return Results.Ok(book);
+            await manager.Book.CreateOneBookAsync(book);
+            await manager.SaveAsync();
+
+            return Results.NoContent();
         });
-
-        app.MapPost("Create", async (RepositoryContext context, CreateBookDto request) =>
-        {
-            using var transaction = await context.Database.BeginTransactionAsync(); // Transaction başlatılıyor
-            try
-            {
-                var user = new Book
-                {
-                    Price = request.Price,
-                    Title = request.Title
-                };
-
-                // Veritabanına ekleme işlemi
-                await context.Books.AddAsync(user);
-                await context.SaveChangesAsync();
-
-                // Eğer burada başka işlemler yapıyorsanız ve hata oluşmazsa, commit ediyoruz
-                await transaction.CommitAsync();
-
-                return Results.Created($"/books/{user.Id}", user);
-            }
-            catch (Exception e)
-            {
-                // Eğer hata olursa, tüm işlemi geri alıyoruz (rollback)
-                await transaction.RollbackAsync();
-                return Results.BadRequest($"An error occurred: {e.Message}");
-            }
-        });
-
-        app.MapPut("OneBookWithId", async (RepositoryContext context, int id, UpdateBookDto request) =>
-        {
-            var user = await context.Books.FirstOrDefaultAsync(x => x.Id == id);
-            using var transaction = await context.Database.BeginTransactionAsync(); // Transaction başlatılıyor
-            try
-            {
-                user = new Book
-                {
-                    Price = request.Price,
-                    Title = request.Title
-                };
-
-                // Veritabanına ekleme işlemi
-                await context.Books.AddAsync(user);
-                await context.SaveChangesAsync();
-
-                // Eğer burada başka işlemler yapıyorsanız ve hata oluşmazsa, commit ediyoruz
-                await transaction.CommitAsync();
-
-                return Results.Created($"/books/{user.Id}", user);
-            }
-            catch (Exception e)
-            {
-                // Eğer hata olursa, tüm işlemi geri alıyoruz (rollback)
-                await transaction.RollbackAsync();
-                return Results.BadRequest($"An error occurred: {e.Message}");
-            }
-        });
-
-        app.MapDelete("BookWithId", async (RepositoryContext context, int id) =>
-        {
-            var user = await context.Books.FirstOrDefaultAsync(x => x.Id == id);
-            using var transaction = await context.Database.BeginTransactionAsync(); // Transaction başlatılıyor
-            try
-            {
-               
-                // Veritabanına ekleme işlemi
-                context.Books.Remove(user!);
-                await context.SaveChangesAsync();
-
-                // Eğer burada başka işlemler yapıyorsanız ve hata oluşmazsa, commit ediyoruz
-                await transaction.CommitAsync();
-
-                return Results.NoContent();
-            }
-            catch (Exception e)
-            {
-                // Eğer hata olursa, tüm işlemi geri alıyoruz (rollback)
-                await transaction.RollbackAsync();
-                return Results.BadRequest($"An error occurred: {e.Message}");
-            }
-        });
-
     }
+
+
+
 }

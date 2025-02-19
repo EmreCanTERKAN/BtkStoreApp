@@ -1,3 +1,4 @@
+using Repositories.Contracts;
 using Repositories.EFCore;
 using WebAPI.Endpoints;
 using WebAPI.Extensions;
@@ -10,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureSqlContext(builder.Configuration);
-
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 
 var app = builder.Build();
 
