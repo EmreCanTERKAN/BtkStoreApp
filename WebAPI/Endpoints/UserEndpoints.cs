@@ -1,7 +1,6 @@
 ﻿using Entities.Dtos;
-using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
-using Repositories.Contracts;
+using Services.Contracts;
 
 
 namespace WebAPI.Endpoints;
@@ -10,61 +9,43 @@ public static class UserEndpoints
 {
     public static void MapUserEndPoints(this WebApplication app)
     {
-        // Tüm kitapları getir
-        app.MapGet("AllBooks", async ([FromServices] IRepositoryManager manager) =>
+
+        app.MapGet("AllBooks", async ([FromServices] IServiceManager manager,CancellationToken cancellationToken) =>
         {
-            var books = await manager.Book.GetAllBooksAsync(false);
+            var books = await manager.BookService.GetAllBooksAsync(false, cancellationToken);
             return Results.Ok(books);
         });
 
-        // Belirtilen ID'ye sahip kitabı getir
-        app.MapGet("BookWithId/{id}", async ([FromServices] IRepositoryManager manager, int id) =>
+
+        app.MapGet("BookWithId/{id}", async ([FromServices] IServiceManager manager, int id, CancellationToken cancellationToken) =>
         {
-            var book = await manager.Book.GetOneBookByIdAsync(id, false);
+            var book = await manager.BookService.GetOneBookByIdAsync(id, false, cancellationToken);
             return book is null ? Results.NotFound() : Results.Ok(book);
         });
 
-        // Yeni kitap oluştur
-        app.MapPost("Create", async ([FromServices] IRepositoryManager manager, [FromBody] CreateBookDto request) =>
+
+        app.MapPost("Create", async ([FromServices] IServiceManager manager, [FromBody] CreateBookDto request,CancellationToken cancellationToken) =>
         {
-            var newBook = new Book
-            {
-                Price = request.Price,
-                Title = request.Title
-            };
+            var entity = await manager.BookService.CreateOneBookAsync(request, cancellationToken);
 
-            await manager.Book.CreateOneBookAsync(newBook);
-            await manager.SaveAsync();
-
-            return Results.Created($"/books/{newBook.Id}", newBook);
+            return Results.Created($"/books/{entity.Id}", entity);
         });
 
-        // Varolan kitabı güncelle
-        app.MapPut("UpdateBookWithId/{id}", async ([FromServices] IRepositoryManager manager, int id, [FromBody] UpdateBookDto request) =>
+
+        app.MapPut("UpdateBookWithId/{id}", async ([FromServices] IServiceManager manager, int id, [FromBody] UpdateBookDto request, CancellationToken cancellationToken) =>
         {
-            var existingBook = await manager.Book.GetOneBookByIdAsync(id, false);
-            if (existingBook is null)
-                return Results.NotFound();
-
-            existingBook.Price = request.Price;
-            existingBook.Title = request.Title;
-
-            await manager.Book.UpdateOneBookAsync(existingBook);
-            await manager.SaveAsync();
-
-            return Results.Ok(existingBook);
+            await manager.BookService.UpdateOneBookAsync(id, request, cancellationToken);
+            return Results.Ok();
         });
 
-        // Kitap silme işlemi
-        app.MapDelete("DeleteBookWithId/{id}", async ([FromServices] IRepositoryManager manager, int id) =>
+
+        app.MapDelete("DeleteBookWithId/{id}", async ([FromServices] IServiceManager manager, int id,CancellationToken cancellationToken) =>
         {
-            var book = await manager.Book.GetOneBookByIdAsync(id, false);
+            var book = await manager.BookService.GetOneBookByIdAsync(id, false);
             if (book is null)
                 return Results.NotFound();
 
-            await manager.Book.CreateOneBookAsync(book);
-            await manager.SaveAsync();
-
+            await manager.BookService.DeleteOneBookAsync(id,true, cancellationToken);
             return Results.NoContent();
         });
     }

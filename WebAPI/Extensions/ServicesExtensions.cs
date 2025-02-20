@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Repositories.Contracts;
 using Repositories.EFCore;
+using Services;
+using Services.Contracts;
 
 namespace WebAPI.Extensions;
 
@@ -42,6 +44,7 @@ public static class ServicesExtensions
     public static void AddRepositoryService(this IServiceCollection services)
     {
         services.AddScoped<IRepositoryManager, RepositoryManager>();
+        services.AddScoped<IServiceManager, ServiceManager>();
     }
 
 
