@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Repositories.Contracts;
 using Repositories.EFCore;
 
 namespace WebAPI.Extensions;
@@ -36,6 +37,11 @@ public static class ServicesExtensions
                     { jwtSecuritySheme, Array.Empty<string>() }
                 });
         });
+    }
+
+    public static void AddRepositoryService(this IServiceCollection services)
+    {
+        services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
 
 

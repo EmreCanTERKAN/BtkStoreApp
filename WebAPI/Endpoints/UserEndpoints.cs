@@ -33,7 +33,7 @@ public static class UserEndpoints
                 Title = request.Title
             };
 
-            await manager.Book.UpdateOneBookAsync(newBook);
+            await manager.Book.CreateOneBookAsync(newBook);
             await manager.SaveAsync();
 
             return Results.Created($"/books/{newBook.Id}", newBook);
