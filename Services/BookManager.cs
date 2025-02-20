@@ -4,12 +4,15 @@ using Repositories.Contracts;
 using Services.Contracts;
 
 namespace Services;
-public class BookManager(IRepositoryManager manager) : IBookService
+public class BookManager(IRepositoryManager manager, ILoggerService logger) : IBookService
 {
     public async Task<Book> CreateOneBookAsync(CreateBookDto request, CancellationToken cancellationToken = default)
     {
         if (request is null)
+        {
+            await logger.LogInfoAsync("Parametre boş geldi ve hata döndü");
             throw new ArgumentException(nameof(request));
+        }
         
         var book = new Book
         {
@@ -25,7 +28,10 @@ public class BookManager(IRepositoryManager manager) : IBookService
     {
         var book = await manager.Book.GetOneBookByIdAsync(id, false);
         if (book is null)
+        {
+            await logger.LogInfoAsync("Parametre boş geldi ve hata döndü");
             throw new ArgumentException(nameof(book));
+        }
         await manager.Book.DeleteOneBookAsync(book);
         await manager.SaveAsync();
 
@@ -40,7 +46,10 @@ public class BookManager(IRepositoryManager manager) : IBookService
     {
         var entity = await manager.Book.GetOneBookByIdAsync(id, trackChanges, cancellationToken);
         if (entity is null)
+        {
+            await logger.LogInfoAsync("Parametre boş geldi ve hata döndü");
             throw new InvalidOperationException($"No Book Found with by {id}");
+        }
         return entity;
     }
 

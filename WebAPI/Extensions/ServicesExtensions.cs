@@ -10,7 +10,7 @@ namespace WebAPI.Extensions;
 
 public static class ServicesExtensions
 {
-    public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) => services.AddDbContext<RepositoryContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("sqlConnecttion")));
+    public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) => services.AddDbContext<RepositoryContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
 
     public static void ConfigureSwagger(this IServiceCollection services)
     {
