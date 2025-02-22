@@ -2,6 +2,7 @@
 using Services.Contracts;
 using System.Net;
 using Entities.ErrorModel;
+using Entities.Exceptions;
 
 namespace WebAPI.Extensions;
 
@@ -13,17 +14,21 @@ public static class ExceptionMiddlewareExtensions
         {
             appError.Run(async context =>
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "application/json";
 
                 var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                 if (contextFeature is not null)
                 {
+                    context.Response.StatusCode = contextFeature.Error switch
+                    {
+                        NotFoundException => StatusCodes.Status404NotFound,
+                        _ => StatusCodes.Status500InternalServerError
+                    };
                     await logger.LogErrorAsync($"birşeyler ters gitti dostum :{contextFeature.Error}");
                     await context.Response.WriteAsync(new ErrorDetails()
                     {
                         StatusCode = context.Response.StatusCode,
-                        Message = "Internal Server Error"
+                        Message = contextFeature.Error.Message
                     }.ToString());
                 }
 
