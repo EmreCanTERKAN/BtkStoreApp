@@ -34,3 +34,7 @@
 2025-02-21 00:40:48.5904 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
 2025-02-21 00:40:48.5904 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\emrec\source\repos\BtkStoreApp\WebAPI\bin\Debug\net9.0\nlog.config
 2025-02-21 00:40:48.6121 Info Configuration initialized.
+2025-02-21 23:39:33.7325 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2025-02-21 23:39:33.7432 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-02-21 23:39:33.7432 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\emrec\source\repos\BtkStoreApp\WebAPI\bin\Debug\net9.0\nlog.config
+2025-02-21 23:39:33.7582 Info Configuration initialized.
