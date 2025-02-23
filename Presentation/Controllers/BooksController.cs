@@ -45,10 +45,6 @@ namespace Presentation.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteBook(int id, CancellationToken cancellationToken)
         {
-            var book = await _manager.BookService.GetOneBookByIdAsync(id, false);
-            if (book is null)
-                return NotFound();
-
             await _manager.BookService.DeleteOneBookAsync(id, true, cancellationToken);
             return NoContent();
         }

@@ -38,3 +38,17 @@
 2025-02-21 23:39:33.7432 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
 2025-02-21 23:39:33.7432 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\emrec\source\repos\BtkStoreApp\WebAPI\bin\Debug\net9.0\nlog.config
 2025-02-21 23:39:33.7582 Info Configuration initialized.
+2025-02-23 11:29:31.4466 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2025-02-23 11:29:31.4585 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-02-23 11:29:31.4585 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\emrec\source\repos\BtkStoreApp\WebAPI\bin\Debug\net9.0\nlog.config
+2025-02-23 11:29:31.4751 Info Configuration initialized.
+2025-02-23 11:36:07.3678 Info AppDomain Shutting down. LogFactory closing...
+2025-02-23 11:36:07.3678 Info LogFactory has been closed.
+2025-02-23 11:48:14.7502 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2025-02-23 11:48:14.7608 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-02-23 11:48:14.7608 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\emrec\source\repos\BtkStoreApp\WebAPI\bin\Debug\net9.0\nlog.config
+2025-02-23 11:48:14.7752 Info Configuration initialized.
+2025-02-23 11:49:37.4210 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2025-02-23 11:49:37.4316 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-02-23 11:49:37.4316 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\emrec\source\repos\BtkStoreApp\WebAPI\bin\Debug\net9.0\nlog.config
+2025-02-23 11:49:37.4479 Info Configuration initialized.

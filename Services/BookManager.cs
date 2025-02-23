@@ -1,4 +1,5 @@
 ﻿using Entities.Dtos;
+using Entities.Exceptions;
 using Entities.Models;
 using Repositories.Contracts;
 using Services.Contracts;
@@ -30,7 +31,7 @@ public class BookManager(IRepositoryManager manager, ILoggerService logger) : IB
         if (book is null)
         {
             await logger.LogInfoAsync("Parametre boş geldi ve hata döndü");
-            throw new ArgumentException(nameof(book));
+            throw new BookNotFoundException(id); 
         }
         await manager.Book.DeleteOneBookAsync(book);
         await manager.SaveAsync();
@@ -48,7 +49,7 @@ public class BookManager(IRepositoryManager manager, ILoggerService logger) : IB
         if (entity is null)
         {
             await logger.LogInfoAsync("Parametre boş geldi ve hata döndü");
-            throw new InvalidOperationException($"No Book Found with by {id}");
+            throw new BookNotFoundException(id);
         }
         return entity;
     }
@@ -61,7 +62,7 @@ public class BookManager(IRepositoryManager manager, ILoggerService logger) : IB
         var book = await manager.Book.GetOneBookByIdAsync(id, false,cancellationToken);
 
         if (book is null)
-            throw new InvalidOperationException($"No Book Found with by {id}");
+            throw new BookNotFoundException(id); 
 
         book.Title = request.Title;
         book.Price = request.Price;
