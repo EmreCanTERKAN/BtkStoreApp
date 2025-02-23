@@ -8,8 +8,13 @@ string configPath = Path.Combine(AppContext.BaseDirectory, "nlog.config");
 LogManager.Setup().LoadConfigurationFromFile(configPath);
 
 
-builder.Services.AddControllers()
-    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
+builder.Services.AddControllers(config =>
+{
+    config.RespectBrowserAcceptHeader = true;
+    config.ReturnHttpNotAcceptable = true;
+})
+.AddXmlDataContractSerializerFormatters()
+.AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
@@ -31,7 +36,7 @@ if (app.Environment.IsDevelopment())
 
 if (app.Environment.IsProduction())
 {
-    app.UseHsts(); 
+    app.UseHsts();
 }
 
 
