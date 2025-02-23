@@ -35,9 +35,10 @@ public class BookManager(IRepositoryManager manager, ILoggerService logger, IMap
 
     }
 
-    public Task<IEnumerable<Book>> GetAllBooksAsync(bool trackChanges, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<BookDto>> GetAllBooksAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return manager.Book.GetAllBooksAsync(trackChanges);
+        var book = await manager.Book.GetAllBooksAsync(trackChanges);
+        return mapper.Map<IEnumerable<BookDto>>(book);
     }
 
     public async Task<Book> GetOneBookByIdAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
