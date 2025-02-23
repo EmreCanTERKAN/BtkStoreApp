@@ -12,10 +12,10 @@ builder.Services.AddControllers()
     .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddRepositoryService();
+
 
 var app = builder.Build();
 

@@ -1,11 +1,12 @@
-﻿using Entities.Dtos;
+﻿using AutoMapper;
+using Entities.Dtos;
 using Entities.Exceptions;
 using Entities.Models;
 using Repositories.Contracts;
 using Services.Contracts;
 
 namespace Services;
-public class BookManager(IRepositoryManager manager, ILoggerService logger) : IBookService
+public class BookManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper) : IBookService
 {
     public async Task<Book> CreateOneBookAsync(CreateBookDto request, CancellationToken cancellationToken = default)
     {
@@ -15,11 +16,7 @@ public class BookManager(IRepositoryManager manager, ILoggerService logger) : IB
             throw new ArgumentException(nameof(request));
         }
         
-        var book = new Book
-        {
-            Price = request.Price,
-            Title = request.Title
-        };
+        var book = mapper.Map<Book>(request);
         await manager.Book.CreateOneBookAsync(book);
         await manager.SaveAsync();
         return book;
@@ -62,10 +59,11 @@ public class BookManager(IRepositoryManager manager, ILoggerService logger) : IB
         var book = await manager.Book.GetOneBookByIdAsync(id, false,cancellationToken);
 
         if (book is null)
-            throw new BookNotFoundException(id); 
+            throw new BookNotFoundException(id);
 
-        book.Title = request.Title;
-        book.Price = request.Price;
+        book = mapper.Map<Book>(request);
+        //book.Title = request.Title;
+        //book.Price = request.Price;
 
         await manager.Book.UpdateOneBookAsync(book,cancellationToken);
         await manager.SaveAsync();

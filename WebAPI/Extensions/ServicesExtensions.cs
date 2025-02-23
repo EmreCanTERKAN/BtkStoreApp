@@ -5,6 +5,7 @@ using Repositories.Contracts;
 using Repositories.EFCore;
 using Services;
 using Services.Contracts;
+using System.Reflection;
 
 namespace WebAPI.Extensions;
 
@@ -46,7 +47,10 @@ public static class ServicesExtensions
         services.AddScoped<IRepositoryManager, RepositoryManager>();
         services.AddScoped<IServiceManager, ServiceManager>();
         services.AddSingleton<ILoggerService, LoggerManager>();
+        services.AddAutoMapper(typeof(Program));
     }
+
+    
 
 
 }
