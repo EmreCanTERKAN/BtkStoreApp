@@ -10,14 +10,15 @@ public class ValidationFilterAttribute : ActionFilterAttribute
         var action = context.RouteData.Values["action"];
 
         var param = context.ActionArguments
-            .SingleOrDefault(x => x.Value.ToString()!.Contains("Dto")).Value;
+            .Values
+            .FirstOrDefault(p => p != null && p.GetType().Name.EndsWith("Dto"));
 
         if (param is null)
         {
             context.Result = new BadRequestObjectResult($"obje boş. {controller} action {action}");
             return;
         }
-        if (context.ModelState.IsValid)
+        if (!context.ModelState.IsValid)
             context.Result = new UnprocessableEntityObjectResult(context.ModelState);
     }
 }

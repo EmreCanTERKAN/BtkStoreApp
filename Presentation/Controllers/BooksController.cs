@@ -1,8 +1,10 @@
 ﻿using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Services.Contracts;
 namespace Presentation.Controllers
 {
+    [ServiceFilter(typeof(LogFilterAttribute))]
     [Route("api/books")]
     [ApiController]
     public class BookController : ControllerBase
@@ -14,6 +16,7 @@ namespace Presentation.Controllers
             _manager = manager;
         }
 
+        
         [HttpGet("all")]
         public async Task<IActionResult> GetAllBooks(CancellationToken cancellationToken)
         {

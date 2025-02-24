@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Presentation.ActionFilters;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services;
@@ -48,6 +49,8 @@ public static class ServicesExtensions
         services.AddScoped<IServiceManager, ServiceManager>();
         services.AddSingleton<ILoggerService, LoggerManager>();
         services.AddAutoMapper(typeof(Program));
+        services.AddScoped<ValidationFilterAttribute>();
+        services.AddScoped<LogFilterAttribute>();
     }
 
     
