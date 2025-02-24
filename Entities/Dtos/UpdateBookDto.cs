@@ -1,4 +1,5 @@
 ﻿namespace Entities.Dtos;
-public sealed record UpdateBookDto(
-    decimal Price,
-    string Title);
+public sealed record UpdateBookDto : ManipulationBookDto
+{
+
+}

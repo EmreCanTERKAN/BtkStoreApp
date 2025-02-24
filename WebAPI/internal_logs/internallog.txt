@@ -90,3 +90,5 @@
 2025-02-23 23:49:06.1713 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
 2025-02-23 23:49:06.1795 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\emrec\source\repos\BtkStoreApp\WebAPI\bin\Debug\net9.0\nlog.config
 2025-02-23 23:49:06.1795 Info Configuration initialized.
+2025-02-24 00:05:11.8300 Info AppDomain Shutting down. LogFactory closing...
+2025-02-24 00:05:11.8396 Info LogFactory has been closed.
